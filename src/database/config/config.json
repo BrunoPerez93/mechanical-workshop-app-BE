@@ -1,0 +1,14 @@
+{
+  "development": {
+    "url": "postgresql://postgres:zumfelde@localhost/taller",
+    "dialect": "postgres"
+  },
+  "test": {
+    "url": "root",
+    "dialect": "postgres"
+  },
+  "production": {
+    "url": "root",
+    "dialect": "postgres"
+  }
+}
