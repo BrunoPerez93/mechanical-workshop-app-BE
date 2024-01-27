@@ -4,13 +4,15 @@ const bcrypt = require('bcryptjs');
 
 const createUser = async (userData) => {
   try {
+    console.log('userData:', userData);
     userData.password = await bcrypt.hash(userData.password, parseInt(10, 10));
     userData.userName = userData.userName.toLowerCase();
     const createdUser = await User.create(userData);
+
     return createdUser;
   } catch (error) {
     console.error(error);
-    if (error.name === 'SequelizeUniqueConstraintError')
+    if (error.name === 'SequelizeUniqueConstraintError'  || error.name === 'SequelizeValidationError')
       throw new BadRequest('Error duplicado');
     throw new DatabaseError(Errors.databaseCreation);
   }
