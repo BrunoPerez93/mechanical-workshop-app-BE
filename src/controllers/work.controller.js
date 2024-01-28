@@ -2,6 +2,7 @@ const { Work } = require("../models");
 const { BadRequest, Errors, DatabaseError } = require("../utils/exceptions");
 
 const createWork = async (workData) => {
+  console.log('work', workData);
   try {
     return Work.create(workData);
   } catch (error) {

@@ -67,7 +67,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     ci: {
       type: DataTypes.STRING,
-      unique: true,
       allowNull: false
     },
     cel: {
