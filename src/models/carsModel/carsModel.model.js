@@ -11,11 +11,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     carName: {
       type: DataTypes.STRING,
-      unique: true,
       required: true
     },
-   
   });
-  CarsModel.associate = (db) => {};
+
+  CarsModel.associate = db => {
+    CarsModel.belongsTo(db.brands, { foreignKey: 'brandId' });
+    CarsModel.hasMany(db.works, { foreignKey: 'carModelId' });
+  };
+
   return CarsModel;
 };

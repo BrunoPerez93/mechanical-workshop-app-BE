@@ -33,10 +33,10 @@ router.get(
 );
 
 router.get(
-  "/:ci",
+  "/:id",
   async (req, res, next) => {
     try {
-      const client = await ClientController.getClient(req.params.ci);
+      const client = await ClientController.getClient(req.params.id);
       if (!client) res.sendStatus(StatusCodes.NOT_FOUND);
       res.json(client);
     } catch (error) {

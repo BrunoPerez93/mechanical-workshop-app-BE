@@ -13,10 +13,13 @@ const createCarsModel = async (carData) => {
   }
 };
 
-const getCars = async () => {
+const getCars = async (brandId) => {
+  const where = {};
+  if (brandId) where.brandId = brandId;
   try {
     return CarsModel.findAll({
       attributes: ['id', 'carName'],
+      where,
     });
   } catch (error) {
     console.log(error);

@@ -12,7 +12,6 @@ module.exports = {
       },
       carName: {
         type: Sequelize.STRING,
-        unique: true,
         required: true
       },
       createdAt: {
@@ -22,8 +21,25 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+      brandId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'brands',
+          key: 'id',
+        },
+        allowNull: false,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
     });
+    await queryInterface.addIndex(
+      'carsModels',
+      {
+        fields: ['brandId', 'carName'],
+        unique: true,
+      }
+    )
   },
 
   async down (queryInterface, Sequelize) {

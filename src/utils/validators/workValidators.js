@@ -2,12 +2,10 @@ const Yup = require("yup");
 
 const createWorkSchema = () =>
   Yup.object({
-    brandName: Yup.string().required(),
-    carName: Yup.string().required(),
+    carModelId: Yup.number().positive().required(),
     matricula: Yup.string().required(),
     km: Yup.number().required(),
-    name: Yup.string().required(),
-    lastname: Yup.string().required(),
+    clientId: Yup.number().positive().required(),
     abs:  Yup.boolean().required(),
     engine: Yup.boolean().required(),
     airbag: Yup.boolean().required(),
@@ -16,12 +14,11 @@ const createWorkSchema = () =>
     goodPayer: Yup.boolean().required(),
     badPayer: Yup.boolean().required(),
     normalPayer: Yup.boolean().required(),
-    ci: Yup.string().required(),
     cel: Yup.number().required(),
     reclame: Yup.string().required(),
     autoParts: Yup.string().required(),
     observations: Yup.string().required(),
-    userName: Yup.string().required(),
+    mechanicId: Yup.number().positive().required(),
     handWork: Yup.number().required(),
     priceAutoParts: Yup.number().required(),
     total: Yup.number().required(),

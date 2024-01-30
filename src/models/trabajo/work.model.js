@@ -6,16 +6,8 @@ module.exports = (sequelize, DataTypes) => {
   const Work = sequelize.define("work", {
     id: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,      
+      autoIncrement: true,
       primaryKey: true
-    },
-    brandName: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    carName: {
-      type: DataTypes.STRING,
-      allowNull: false
     },
     matricula: {
       type: DataTypes.STRING,
@@ -23,14 +15,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     km: {
       type: DataTypes.NUMBER,
-      allowNull: false
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    lastname: {
-      type: DataTypes.STRING,
       allowNull: false
     },
     abs: {
@@ -65,10 +49,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
-    ci: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
     cel: {
       type: DataTypes.NUMBER,
       allowNull: false
@@ -85,12 +65,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    userName: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
     handWork: {
-      type: DataTypes.STRING,
+      type: DataTypes.NUMBER,
       allowNull: false
     },
     priceAutoParts: {
@@ -102,6 +78,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
   });
-  Work.associate = (db) => {};
+
+  Work.associate = db => {
+    Work.belongsTo(db.carsModels, { foreignKey: 'carModelId' });
+    Work.belongsTo(db.mechanics, { foreignKey: 'mechanicId' });
+    Work.belongsTo(db.clients, { foreignKey: 'clientId' });
+  };
   return Work;
 };

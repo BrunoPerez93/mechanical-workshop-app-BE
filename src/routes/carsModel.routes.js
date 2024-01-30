@@ -24,7 +24,8 @@ router.get(
   "/",
   async (req, res, next) => {
     try {
-      const carsModel = await CarsModelController.getCars();
+      const { brandId } = req.query;
+      const carsModel = await CarsModelController.getCars(brandId);
       res.json(carsModel);
     } catch (error) {
       next(error);

@@ -11,14 +11,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     userName: {
       type: DataTypes.STRING,
-      unique: true,
-      allowNull: false
-    },
-    password: {
-      type: DataTypes.STRING,
       allowNull: false
     },
   });
-  Mechanic.associate = (db) => {};
+
+  Mechanic.associate = db => {
+    Mechanic.hasMany(db.works, { foreignKey: 'mechanicId' });
+  };
   return Mechanic;
 };

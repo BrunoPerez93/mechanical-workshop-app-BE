@@ -10,28 +10,12 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      brandName: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      carName: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
       matricula: {
         type: Sequelize.STRING,
         allowNull: false
       },
       km: {
         type: Sequelize.INTEGER,
-        allowNull: false
-      },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      lastname: {
-        type: Sequelize.STRING,
         allowNull: false
       },
       abs: {
@@ -66,11 +50,6 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false
       },
-      ci: {
-        type: Sequelize.STRING,
-        unique: true,
-        allowNull: false
-      },
       cel: {
         type: Sequelize.INTEGER,
         allowNull: false
@@ -87,12 +66,8 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      userName: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
       handWork: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false
       },
       priceAutoParts: {
@@ -110,11 +85,42 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+      clientId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'clients',
+          key: 'id',
+        },
+        allowNull: false,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
+      carModelId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'carsModels',
+          key: 'id',
+        },
+        allowNull: false,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
+      mechanicId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'mechanics',
+          key: 'id',
+        },
+        allowNull: false,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
     });
   },
 
   async down (queryInterface, Sequelize) {
+    // await queryInterface.removeIndex('works');
     await queryInterface.dropTable('works');
   }
 };

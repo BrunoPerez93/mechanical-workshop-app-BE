@@ -7,6 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
+      primaryKey: true,
+      allowNull: false,
     },
     name: {
       type: DataTypes.STRING,
@@ -20,9 +22,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       unique: true,
       allowNull: false,
-      primaryKey: true,
     },
   });
-  Client.associate = (db) => {};
+
+  Client.associate = db => {
+    Client.hasMany(db.works, { foreignKey: 'clientId' });
+  };
   return Client;
 };

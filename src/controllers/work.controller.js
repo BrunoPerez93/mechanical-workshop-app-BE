@@ -1,8 +1,8 @@
-const { Work } = require("../models");
+const { Op } = require("sequelize");
+const { Work, Mechanic, Client, CarsModel } = require("../models");
 const { BadRequest, Errors, DatabaseError } = require("../utils/exceptions");
 
 const createWork = async (workData) => {
-  console.log('work', workData);
   try {
     return Work.create(workData);
   } catch (error) {
@@ -13,11 +13,60 @@ const createWork = async (workData) => {
   }
 };
 
-const getWorks = async () => {
+const getWorks = async (filters) => {
   try {
-    return Work.findAll({
-      attributes: { exclude: [''] }
-    });
+    const options = { include: [] };
+    if (filters.mechanicName) {
+      options.include = [
+        {
+          association: Work.associations.mechanic,
+          where: {
+            userName: {
+              [Op.iLike]: `%${filters.mechanicName}%`
+            }
+          }
+        },
+        Client,
+        {
+          association: Work.associations.carsModel,
+          include: [{
+            association: CarsModel.associations.brand,
+          }],
+        }
+      ]
+    } else if (filters.clientCi) {
+      options.include = [
+        Mechanic,
+        {
+          association: Work.associations.client,
+          where: {
+            ci: {
+              [Op.iLike]: `${filters.clientCi}%`
+            }
+          }
+        },
+        {
+          association: Work.associations.carsModel,
+          include: [{
+            association: CarsModel.associations.brand,
+          }],
+        }
+      ]
+    } else if (Object.keys(filters).length) {
+      options.include = [
+        Mechanic,
+        Client,
+        {
+          association: Work.associations.carsModel,
+          include: [{
+            association: CarsModel.associations.brand,
+          }],
+        }
+      ];
+      options.where = filters;
+    }
+    options.logging = console.log;
+    return Work.findAll(options);
   } catch (error) {
     console.log(error);
     throw new DatabaseError(Errors.databaseCreation);
@@ -27,32 +76,16 @@ const getWorks = async () => {
 const getWork = async (id) => {
   try {
     return Work.findByPk(id, {
-      attributes: [
-        'id',
-        'brandName',
-        'carName',
-        'matricula',
-        'km',
-        'name',
-        'lastname',
-        'abs',
-        'engine',
-        'airbag',
-        'steer',
-        'ta',
-        'goodPayer',
-        'badPayer',
-        'normalPayer',
-        'ci',
-        'cel',
-        'reclame',
-        'autoParts',
-        'observations',
-        'userName',
-        'handWork',
-        'priceAutoParts',
-        'total',
-      ],
+      include: [
+        Mechanic,
+        Client,
+        {
+          association: Work.associations.carsModel,
+          include: [{
+            association: CarsModel.associations.brand,
+          }],
+        }
+      ]
     });
   } catch (error) {
     console.log(error);
