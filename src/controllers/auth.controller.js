@@ -23,7 +23,7 @@ const login = async (userName, password) => {
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRES }
   )
-  return { token: jwtToken };
+  return { token: jwtToken, userId: userFound.id, role: userFound.role, userName: userFound.userName };
 };
 
 const LoginController = {

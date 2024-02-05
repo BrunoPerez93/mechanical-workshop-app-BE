@@ -29,6 +29,7 @@ router.get(
     try {
       const filters = req.query;
       const work = await WorkController.getWorks(filters);
+
       res.json(work);
     } catch (error) {
       next(error);

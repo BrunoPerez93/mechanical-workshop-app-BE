@@ -9,7 +9,7 @@ const sequelize = new Sequelize(
     dialect: "postgres",
     charset: "utf8",
     collate: "utf8_general_ci",
-    timezone: "-03:00",
+    // timezone: "-03:00",
     logging: false,
     define: {
       defaultScope: {

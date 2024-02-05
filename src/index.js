@@ -28,7 +28,6 @@ app.use((err, req, res, next) => {
       ? `${err.details.name}: ${err.details.message}`
       : `${err.name}: ${err.message}`
   );
-  //console.log('error fede', err);
   if (err.isOperational) {
     return res.status(err.status).json(err);
   }

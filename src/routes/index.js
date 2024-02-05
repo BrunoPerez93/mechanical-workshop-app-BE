@@ -35,7 +35,7 @@ router.use(
 router.use(
   "/mechanics",
   passport.authenticate('jwt', { session: false }),
-  validateRole([Roles.Admin]),
+  validateRole([Roles.Admin, Roles.Management]),
   mechanicRouter
 );
 router.use(

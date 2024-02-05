@@ -3,7 +3,7 @@ const { BadRequest, Errors, DatabaseError } = require("../utils/exceptions");
 
 const createCarsModel = async (carData) => {
   try {
-    console.log('carData', carData);
+   
     return CarsModel.create(carData);
   } catch (error) {
     console.log(error);

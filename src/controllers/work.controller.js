@@ -1,6 +1,7 @@
 const { Op } = require("sequelize");
 const { Work, Mechanic, Client, CarsModel } = require("../models");
 const { BadRequest, Errors, DatabaseError } = require("../utils/exceptions");
+const { DateTime } = require("luxon");
 
 const createWork = async (workData) => {
   try {
@@ -15,57 +16,56 @@ const createWork = async (workData) => {
 
 const getWorks = async (filters) => {
   try {
-    const options = { include: [] };
-    if (filters.mechanicName) {
-      options.include = [
-        {
-          association: Work.associations.mechanic,
-          where: {
+    const options = {
+      include: [{
+        association: Work.associations.mechanic,
+        where: {
+          ...(filters.mechanicName && {
             userName: {
               [Op.iLike]: `%${filters.mechanicName}%`
             }
-          }
-        },
-        Client,
-        {
-          association: Work.associations.carsModel,
-          include: [{
-            association: CarsModel.associations.brand,
-          }],
+          })
         }
-      ]
-    } else if (filters.clientCi) {
-      options.include = [
-        Mechanic,
-        {
-          association: Work.associations.client,
-          where: {
+      }, {
+        association: Work.associations.carsModel,
+        include: [{
+          association: CarsModel.associations.brand,
+        }],
+      }, {
+        association: Work.associations.client,
+        where: {
+          ...(filters.ci && {
             ci: {
-              [Op.iLike]: `${filters.clientCi}%`
+              [Op.iLike]: `${filters.ci}%`
             }
-          }
-        },
-        {
-          association: Work.associations.carsModel,
-          include: [{
-            association: CarsModel.associations.brand,
-          }],
+          }),
+          ...(filters.clientName && {
+            name: {
+              [Op.iLike]: `%${filters.clientName}%`
+            }
+          })
         }
-      ]
-    } else if (Object.keys(filters).length) {
-      options.include = [
-        Mechanic,
-        Client,
-        {
-          association: Work.associations.carsModel,
-          include: [{
-            association: CarsModel.associations.brand,
-          }],
+      },]
+    };
+    options.where = Object.entries(filters).reduce((prev, [key, value]) => {
+      if (key === 'createdAt') {
+        prev[key] = {
+          [Op.and]: [
+            { [Op.gte]: DateTime.fromISO(value, { zone: 'UTC-3' }).startOf('day').toJSDate() },
+            { [Op.lte]: DateTime.fromISO(value, { zone: 'UTC-3' }).endOf('day').toJSDate() },
+          ]
         }
-      ];
-      options.where = filters;
-    }
-    options.logging = console.log;
+      } else {
+        prev[key] = {
+          [Op.iLike]: `%${value}%`
+        }
+      }
+      return prev;
+    }, {});
+    console.log('options', options)
+    options.attributes = { include: ['createdAt'] };
+    options.order = [['createdAt', 'DESC']];
+    options.attributes=  ['id', 'matricula', 'createdAt',];
     return Work.findAll(options);
   } catch (error) {
     console.log(error);
