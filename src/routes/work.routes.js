@@ -50,4 +50,22 @@ router.get(
   }
 );
 
+router.put(
+  "/:id",
+  validateRole([Roles.Admin]),
+ // validateBodyMW(updateWorkSchema),
+  async (req, res, next) => {
+    try {
+      const updatedWork = await WorkController.updateWork(req.params.id, req.body);
+      if (!updatedWork) {
+        res.sendStatus(StatusCodes.NOT_FOUND);
+      } else {
+        res.json(updatedWork);
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 module.exports = router;
