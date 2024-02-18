@@ -55,6 +55,7 @@ router.put(
   validateRole([Roles.Admin]),
  // validateBodyMW(updateWorkSchema),
   async (req, res, next) => {
+    console.log('entro');
     try {
       const updatedWork = await WorkController.updateWork(req.params.id, req.body);
       if (!updatedWork) {

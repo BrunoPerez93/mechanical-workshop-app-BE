@@ -70,9 +70,10 @@ const getWorks = async (filters) => {
             ],
           };
         } else {
-          prev[key] = {
-            [Op.iLike]: `%${value}%`,
-          };
+          if (!['ci', 'mechanicName', 'clientName'].includes(key))
+            prev[key] = {
+              [Op.iLike]: `%${value}%`,
+            };
         }
         return prev;
       }, {}),
@@ -110,10 +111,32 @@ const getWork = async (id) => {
   }
 };
 
+const updateWork = async (id, updatedData) => {
+  try {
+    const existingWork = await Work.findByPk(id);
+
+    if (!existingWork) {
+      throw new BadRequest('Work not found');
+    }
+
+    await existingWork.update(updatedData);
+
+    return existingWork;
+  } catch (error) {
+    console.log(error);
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      throw new BadRequest('Error duplicado');
+    }
+    throw new DatabaseError(Errors.databaseUpdate);
+  }
+};
+
+
 const WorkController = {
   createWork,
   getWorks,
-  getWork
+  getWork,
+  updateWork
 };
 
 module.exports = WorkController;
