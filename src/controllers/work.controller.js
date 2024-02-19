@@ -5,7 +5,6 @@ const { DateTime } = require("luxon");
 
 const createWork = async (workData) => {
   try {
-    console.log('workData', workData);
     return Work.create(workData);
   } catch (error) {
     console.log(error);
@@ -80,7 +79,6 @@ const getWorks = async (filters) => {
       order: [['createdAt', 'DESC']],
     };
 
-    console.log('options', options);
     options.attributes = { include: ['createdAt'] };
 
     return Work.findAll(options);
