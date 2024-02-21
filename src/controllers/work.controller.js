@@ -34,6 +34,7 @@ const getWorks = async (filters) => {
             {
               association: CarsModel.associations.brand,
             },
+
           ],
         },
         {
@@ -78,7 +79,7 @@ const getWorks = async (filters) => {
       }, {}),
       order: [['createdAt', 'DESC']],
     };
-
+    console.log('optios', options);
     options.attributes = { include: ['createdAt'] };
 
     return Work.findAll(options);

@@ -3,6 +3,7 @@ const { BadRequest, Errors, DatabaseError } = require("../utils/exceptions");
 
 const createClient = async (clientData) => {
   try {
+    console.log('cliendta', clientData)
     return Client.create(clientData);
   } catch (error) {
     console.log(error);
@@ -23,9 +24,9 @@ const getClients = async () => {
   }
 };
 
-const getClient = async (ci) => {
+const getClient = async (id) => {
   try {
-    return Client.findByPk(ci, {
+    return Client.findByPk(id, {
       attributes: ['id', 'name', 'lastname', 'ci'],
     });
   } catch (error) {

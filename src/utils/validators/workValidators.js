@@ -14,6 +14,7 @@ const createWorkSchema = () =>
     goodPayer: Yup.boolean().required(),
     badPayer: Yup.boolean().required(),
     normalPayer: Yup.boolean().required(),
+    notAccepted: Yup.boolean().required(),
     cel: Yup.number().required(),
     reclame: Yup.string().required(),
     autoParts: Yup.string().required(),

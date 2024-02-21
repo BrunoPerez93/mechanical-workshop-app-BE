@@ -49,6 +49,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
+    notAccepted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     cel: {
       type: DataTypes.NUMBER,
       allowNull: false

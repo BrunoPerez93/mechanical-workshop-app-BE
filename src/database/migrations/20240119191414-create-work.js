@@ -50,6 +50,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false
       },
+      notAccepted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
       cel: {
         type: Sequelize.INTEGER,
         allowNull: false

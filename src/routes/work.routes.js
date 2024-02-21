@@ -52,8 +52,8 @@ router.get(
 
 router.put(
   "/:id",
-  validateRole([Roles.Admin]),
- // validateBodyMW(updateWorkSchema),
+  validateRole([Roles.Admin, Roles.Mechanic]),
+    
   async (req, res, next) => {
     try {
       const updatedWork = await WorkController.updateWork(req.params.id, req.body);
