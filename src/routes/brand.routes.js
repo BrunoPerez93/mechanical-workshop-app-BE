@@ -4,6 +4,8 @@ const { createBrandSchema } = require("../utils/validators/brandValidators");
 const { StatusCodes } = require("http-status-codes");
 
 const BrandController = require("../controllers/brand.controller");
+const { validateRole } = require("../utils/middlewares");
+const { Roles } = require("../utils/common");
 
 const router = express.Router();
 
@@ -40,6 +42,24 @@ router.get(
       const brand = await BrandController.getBrand(req.params.id);
       if (!brand) res.sendStatus(StatusCodes.NOT_FOUND);
       res.json(brand);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.put(
+  "/:id",
+  validateRole([Roles.Admin]),
+    
+  async (req, res, next) => {
+    try {
+      const updatedBrand = await BrandController.updateBrand(req.params.id, req.body);
+      if (!updatedBrand) {
+        res.sendStatus(StatusCodes.NOT_FOUND);
+      } else {
+        res.json(updatedBrand);
+      }
     } catch (error) {
       next(error);
     }

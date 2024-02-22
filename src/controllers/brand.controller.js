@@ -34,10 +34,31 @@ const getBrand = async (id) => {
   }
 };
 
+const updateBrand = async (id, updatedData) => {
+  try {
+    const existingBrand = await Brand.findByPk(id);
+
+    if (!existingBrand) {
+      throw new BadRequest('Brand not found');
+    }
+
+    await existingBrand.update(updatedData);
+
+    return existingBrand;
+  } catch (error) {
+    console.log(error);
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      throw new BadRequest('Error duplicado');
+    }
+    throw new DatabaseError(Errors.databaseUpdate);
+  }
+};
+
 const BrandController = {
   createBrand,
   getBrands,
-  getBrand
+  getBrand,
+  updateBrand
 };
 
 module.exports = BrandController;

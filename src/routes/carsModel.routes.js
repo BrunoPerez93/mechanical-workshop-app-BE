@@ -4,6 +4,8 @@ const { createCarsModelSchema } = require("../utils/validators/carsModelValidato
 const { StatusCodes } = require("http-status-codes");
 
 const CarsModelController = require("../controllers/carsModel.controller");
+const { validateRole } = require("../utils/middlewares");
+const { Roles } = require("../utils/common");
 
 const router = express.Router();
 
@@ -40,6 +42,24 @@ router.get(
       const carsModel = await CarsModelController.getCar(req.params.id);
       if (!carsModel) res.sendStatus(StatusCodes.NOT_FOUND);
       res.json(carsModel);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.put(
+  "/:id",
+  validateRole([Roles.Admin]),
+    
+  async (req, res, next) => {
+    try {
+      const updatedModel = await CarsModelController.updateModel(req.params.id, req.body);
+      if (!updatedModel) {
+        res.sendStatus(StatusCodes.NOT_FOUND);
+      } else {
+        res.json(updatedModel);
+      }
     } catch (error) {
       next(error);
     }

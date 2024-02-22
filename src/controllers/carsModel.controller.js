@@ -38,10 +38,32 @@ const getCar = async (id) => {
   }
 };
 
+const updateModel = async (id, updatedData) => {
+  try {
+    const existingModel = await CarsModel.findByPk(id);
+
+    console.log('existingmodel', existingModel);
+    if (!existingModel) {
+      throw new BadRequest('Model not found');
+    }
+
+    await existingModel.update(updatedData);
+
+    return existingModel;
+  } catch (error) {
+    console.log(error);
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      throw new BadRequest('Error duplicado');
+    }
+    throw new DatabaseError(Errors.databaseUpdate);
+  }
+};
+
 const CarsModelController = {
   createCarsModel,
   getCars,
-  getCar
+  getCar,
+  updateModel,
 };
 
 module.exports = CarsModelController;

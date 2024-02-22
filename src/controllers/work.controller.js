@@ -40,11 +40,11 @@ const getWorks = async (filters) => {
         {
           association: Work.associations.client,
           where: {
-            ...(filters.ci && {
+         /*    ...(filters.ci && {
               ci: {
                 [Op.iLike]: `${filters.ci}%`,
               },
-            }),
+            }), */
             ...(filters.clientName && {
               name: {
                 [Op.iLike]: `%${filters.clientName}%`,
@@ -70,16 +70,16 @@ const getWorks = async (filters) => {
             ],
           };
         } else {
-          if (!['ci', 'mechanicName', 'clientName'].includes(key))
+          if (![/* 'ci', */ 'mechanicName', 'clientName', 'brandName'].includes(key))
             prev[key] = {
               [Op.iLike]: `%${value}%`,
             };
         }
+        
         return prev;
       }, {}),
       order: [['createdAt', 'DESC']],
     };
-    console.log('optios', options);
     options.attributes = { include: ['createdAt'] };
 
     return Work.findAll(options);
