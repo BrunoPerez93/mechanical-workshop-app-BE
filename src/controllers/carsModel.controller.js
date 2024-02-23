@@ -41,8 +41,7 @@ const getCar = async (id) => {
 const updateModel = async (id, updatedData) => {
   try {
     const existingModel = await CarsModel.findByPk(id);
-
-    console.log('existingmodel', existingModel);
+    
     if (!existingModel) {
       throw new BadRequest('Model not found');
     }

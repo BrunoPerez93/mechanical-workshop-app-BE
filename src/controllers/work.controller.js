@@ -30,9 +30,17 @@ const getWorks = async (filters) => {
         },
         {
           association: Work.associations.carsModel,
+          required: !!filters.brandNames,
           include: [
             {
               association: CarsModel.associations.brand,
+              where: {
+                ...(filters.brandNames && {
+                  brandName: {
+                    [Op.iLike]: `%${filters.brandNames}%`,
+                  },
+                })
+              },
             },
 
           ],
@@ -40,11 +48,11 @@ const getWorks = async (filters) => {
         {
           association: Work.associations.client,
           where: {
-         /*    ...(filters.ci && {
-              ci: {
-                [Op.iLike]: `${filters.ci}%`,
-              },
-            }), */
+            /*    ...(filters.ci && {
+                 ci: {
+                   [Op.iLike]: `${filters.ci}%`,
+                 },
+               }), */
             ...(filters.clientName && {
               name: {
                 [Op.iLike]: `%${filters.clientName}%`,
@@ -70,17 +78,18 @@ const getWorks = async (filters) => {
             ],
           };
         } else {
-          if (![/* 'ci', */ 'mechanicName', 'clientName', 'brandName'].includes(key))
+          if (![/* 'ci', */ 'mechanicName', 'clientName', 'brandNames'].includes(key))
             prev[key] = {
               [Op.iLike]: `%${value}%`,
             };
         }
-        
+
         return prev;
       }, {}),
       order: [['createdAt', 'DESC']],
     };
     options.attributes = { include: ['createdAt'] };
+    options.logging = console.log;
 
     return Work.findAll(options);
   } catch (error) {
