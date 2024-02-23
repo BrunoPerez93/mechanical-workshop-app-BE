@@ -7,17 +7,23 @@ const createCarsModel = async (carData) => {
     const modelFound = await CarsModel.findOne({
       where: {
         carName: {
-          [Op.iLike]: (carData.carName || '').toLocaleLowerCase(),
-          brandId: carData.brandId
-        }
+          [Op.iLike]: (carData.carName || '').toLowerCase(),
+        },
+        brandId: carData.brandId,
       },
       raw: true,
     });
-    if (modelFound) throw new BadRequest(Errors.duplicated);
+
+    if (modelFound) {
+      throw new BadRequest(Errors.duplicated);
+    }
+
     return CarsModel.create(carData);
   } catch (error) {
     console.log(error);
-    if (error.name === BadRequest.name) throw error;
+    if (error.name === BadRequest.name) {
+      throw error;
+    }
     throw new DatabaseError(Errors.databaseCreation);
   }
 };
