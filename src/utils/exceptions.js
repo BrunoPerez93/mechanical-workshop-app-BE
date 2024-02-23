@@ -73,6 +73,10 @@ const Errors = {
   credentialsError: {
     code: 103,
     msg: "Wrong username or password",
+  },
+  duplicated: {
+    code: 104,
+    msg: "Duplicated item",
   }
 };
 
