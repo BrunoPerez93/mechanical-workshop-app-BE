@@ -6,10 +6,12 @@ const initialSetup = require('./config/initialSetup');
 const apiRouter = require("./routes");
 const cors = require('cors');
 const helmet = require('helmet');
+const morgan = require('morgan')
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(morgan('dev'))
 
 app.use(cors());
 app.use(helmet());
