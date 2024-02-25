@@ -3,11 +3,11 @@ const { BadRequest, Errors, DatabaseError } = require("../utils/exceptions");
 
 const createClient = async (clientData) => {
   try {
-    return Client.create(clientData);
+    const client = await Client.create(clientData);
+    return client;
   } catch (error) {
-    console.log(error);
     if (error.name === 'SequelizeUniqueConstraintError')
-      throw new BadRequest('Error duplicado');
+      throw new BadRequest(Errors.duplicated);
     throw new DatabaseError(Errors.databaseCreation);
   }
 };
