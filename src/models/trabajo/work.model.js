@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     km: {
       type: DataTypes.NUMBER,
-      allowNull: false
+      allowNull: true
     },
     abs: {
       type: DataTypes.BOOLEAN,
@@ -53,39 +53,35 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
-    cel: {
-      type: DataTypes.NUMBER,
-      allowNull: false
-    },
     reclame: {
       type: DataTypes.STRING,
       allowNull: false
     },
     autoParts: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     observations: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     handWork: {
       type: DataTypes.NUMBER,
-      allowNull: false
+      allowNull: true
     },
     priceAutoParts: {
       type: DataTypes.NUMBER,
-      allowNull: false
+      allowNull: true
     },
     total: {
       type: DataTypes.NUMBER,
-      allowNull: false
+      allowNull: true
     },
   });
 
   Work.associate = db => {
     Work.belongsTo(db.carsModels, { foreignKey: 'carModelId' });
-    Work.belongsTo(db.mechanics, { foreignKey: 'mechanicId' });
+    Work.belongsTo(db.mechanics, { foreignKey: { name: 'mechanicId', allowNull: true } });
     Work.belongsTo(db.clients, { foreignKey: 'clientId' });
   };
   return Work;

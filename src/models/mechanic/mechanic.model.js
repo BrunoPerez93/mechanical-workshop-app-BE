@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Mechanic.associate = db => {
-    Mechanic.hasMany(db.works, { foreignKey: 'mechanicId' });
+    Mechanic.hasMany(db.works, { foreignKey: { name: 'mechanicId', allowNull: true } });
   };
   return Mechanic;
 };

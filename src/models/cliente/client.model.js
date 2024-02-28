@@ -16,11 +16,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     lastname: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     ci: {
       type: DataTypes.STRING,
       unique: true,      
+      allowNull: true
+    },
+    cel: {
+      type: DataTypes.INTEGER,    
       allowNull: true
     },
   });
