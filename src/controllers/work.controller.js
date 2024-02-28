@@ -20,13 +20,13 @@ const getWorks = async (filters) => {
       include: [
         {
           association: Work.associations.mechanic,
-          where: {
-            ...(filters.mechanicName && {
-              userName: {
-                [Op.iLike]: `%${filters.mechanicName}%`,
-              },
-            }),
-          },
+          // where: {
+          //   ...(filters.mechanicName && {
+          //     userName: {
+          //       [Op.iLike]: `%${filters.mechanicName}%`,
+          //     },
+          //   }),
+          // },
         },
         {
           association: Work.associations.carsModel,

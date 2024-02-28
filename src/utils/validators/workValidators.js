@@ -5,6 +5,7 @@ const createWorkSchema = () =>
     carModelId: Yup.number().positive().required(),
     matricula: Yup.string().required(),
     km: Yup.number().nullable(),
+    year: Yup.number().nullable(),
     clientId: Yup.number().positive().required(),
     abs:  Yup.boolean(),
     engine: Yup.boolean(),

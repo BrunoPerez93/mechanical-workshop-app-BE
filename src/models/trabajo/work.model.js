@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.NUMBER,
       allowNull: true
     },
+    year: {
+      type: DataTypes.NUMBER,
+      allowNull: true
+    },
     abs: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
