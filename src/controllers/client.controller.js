@@ -34,10 +34,31 @@ const getClient = async (id) => {
   }
 };
 
+const updateClient = async (id, updatedData) => {
+  try {
+    const existingClient = await Client.findByPk(id);
+
+    if (!existingClient) {
+      throw new BadRequest('Client not found');
+    }
+
+    await existingClient.update(updatedData);
+
+    return existingClient;
+  } catch (error) {
+    console.log(error);
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      throw new BadRequest('Error duplicado');
+    }
+    throw new DatabaseError(Errors.databaseUpdate);
+  }
+};
+
 const ClientController = {
   createClient,
   getClients,
-  getClient
+  getClient,
+  updateClient
 };
 
 module.exports = ClientController;
